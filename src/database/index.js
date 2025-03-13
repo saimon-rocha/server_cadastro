@@ -1,27 +1,30 @@
 const { Sequelize } = require('sequelize');
-const databaseConfig = require('../config/db');
-const Users = require('../models/Users');
+const Tarefas = require('../models/Tarefas'); // Supondo que o caminho do modelo seja esse
+const databaseConfig = require('../config/db'); // O arquivo de configuração
 
 class Database {
   constructor() {
     this.init();
   }
 
-  init() {
-    // Criando a conexão com o banco de dados
-    this.connection = new Sequelize(
-      databaseConfig.database,   // Nome do banco de dados
-      databaseConfig.username,   // Usuário do banco
-      databaseConfig.password,   // Senha do banco
-      {
-        host: databaseConfig.host,     // Endereço do banco de dados
-        dialect: databaseConfig.dialect,  // Dialeto (PostgreSQL, MySQL, etc)
-        logging: false,  // Desabilitando logs do Sequelize
-      }
-    );
+  async init() {
+    try {
+      // Criando a conexão com o banco de dados
+      this.connection = new Sequelize(databaseConfig);
 
-    // Passando a instância do Sequelize para o modelo Users
-    Users.init(this.connection); // Agora a conexão é passada corretamente para a inicialização do modelo
+      // Verificar a conexão com o banco de dados
+      await this.connection.authenticate();
+      console.log('Conexão com o banco de dados foi bem-sucedida!');
+
+      // Inicializando os modelos
+      Tarefas.init(this.connection);
+
+      // Sincronizando o banco de dados
+      await this.connection.sync({ force: false });
+      console.log('Banco de dados sincronizado');
+    } catch (error) {
+      console.error('Erro ao conectar ao banco de dados:', error);
+    }
   }
 }
 

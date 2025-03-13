@@ -1,10 +1,9 @@
-const express = require('express');
-const app = express();
-const PORT = 3000;
-const routes = require('./routes');
+// src/server.js
+const app = require('./app'); // Importa a aplicação do app.js
 
+const port = 3000;
 
-app.use(routes);
-app.listen(PORT, () =>{
-    console.log(`Servidor rodando em http://localhost:${PORT}`);
-})
+// Inicia o servidor
+app.listen(port, () => {
+  console.log(`Servidor rodando em http://localhost:${port}`);
+});

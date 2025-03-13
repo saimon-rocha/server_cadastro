@@ -1,12 +1,20 @@
 const { Router } = require('express');
-const UsuarioController = require('./controllers/UsuarioController');
+const TarefasController = require('./controllers/TarefasController');
 
-const routes = Router();
+const tarefasRoutes = new Router();
 
-routes.get('/', (req, res) => res.redirect('/usuarios'));
-routes.get('/usuarios', UsuarioController.index);  // Adicionando a rota de listagem
-routes.post('/usuarios', UsuarioController.create);
-routes.put('/usuarios/:id', UsuarioController.edit);
-routes.delete('/usuarios/:id', UsuarioController.delete);
+tarefasRoutes.get('/', TarefasController.index); 
+tarefasRoutes.post('/cadastrar', TarefasController.create);
+tarefasRoutes.put('/editar/:id', TarefasController.edit);
+tarefasRoutes.delete('/deletar/:id', TarefasController.delete);
+
+const routes = new Router();
+// Associando cada roteador à rota principal
+routes.use('/tarefas', tarefasRoutes);
+
+// Página inicial
+routes.get('/', (req, res) => {
+    res.redirect('/tarefas/');
+});
 
 module.exports = routes;
