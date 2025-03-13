@@ -7,7 +7,7 @@ class TarefasController {
         try {
             const tarefas = await Tarefas.findAll();
             if (!tarefas.length) {
-                return res.status(404).json({ message: "Nenhuma tarefa encontrada!" });
+                return res.status(200).json({ message: "Nenhuma tarefa cadastrada!" });
             }
             return res.status(200).json(tarefas);
         } catch (error) {
