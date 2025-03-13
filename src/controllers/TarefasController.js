@@ -5,16 +5,16 @@ class TarefasController {
     // Método para listar todas as tarefas
     static async index(req, res) {
         try {
-            const tarefas = await Tarefas.findAll();  // Busca todas as tarefas no banco de dados
-            if (tarefas && tarefas.length > 0) {
-                return res.status(200).json(tarefas);  // Retorna as tarefas no formato JSON
-            } else {
-                return res.status(404).send("Nenhuma tarefa encontrada!");  // Caso não encontre tarefas
+            const tarefas = await Tarefas.findAll();
+            if (!tarefas.length) {
+                return res.status(404).json({ message: "Nenhuma tarefa encontrada!" });
             }
+            return res.status(200).json(tarefas);
         } catch (error) {
-            console.error('Erro ao buscar tarefas:', error.message);  // Exibe o erro no console
-            return res.status(500).send("Erro ao buscar tarefas");  // Retorna erro genérico para o cliente
+            console.error("Erro ao buscar tarefas:", error.message);
+            return res.status(500).json({ error: "Erro ao buscar tarefas" });
         }
+
     }
 
     // Método para criar uma nova tarefa
@@ -33,33 +33,6 @@ class TarefasController {
         } catch (error) {
             console.error('Erro ao criar tarefa:', error);  // Exibe o erro no console
             return res.status(500).json({ message: 'Erro ao criar tarefa.' });  // Retorna erro genérico
-        }
-    }
-
-    // Método para editar uma tarefa
-    static async edit(req, res) {
-        const { id } = req.params;  // Obtém o ID da tarefa da URL
-        const { title, description } = req.body;  // Obtém os dados da tarefa a ser atualizada
-
-        try {
-            // Busca a tarefa no banco de dados
-            const tarefa = await Tarefas.findByPk(id);
-            if (!tarefa) {
-                return res.status(404).json({ message: 'Tarefa não encontrada!' });
-            }
-
-            // Atualiza os dados da tarefa
-            tarefa.title = title || tarefa.title;
-            tarefa.description = description || tarefa.description;
-            
-            // Salva as alterações no banco de dados
-            await tarefa.save();
-
-            // Retorna a tarefa atualizada
-            return res.status(200).json({ message: 'Tarefa atualizada com sucesso!', tarefa });
-        } catch (error) {
-            console.error('Erro ao editar tarefa:', error);
-            return res.status(500).json({ message: 'Erro ao editar tarefa.' });
         }
     }
 

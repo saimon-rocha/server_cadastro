@@ -5,7 +5,6 @@ const tarefasRoutes = new Router();
 
 tarefasRoutes.get('/', TarefasController.index); 
 tarefasRoutes.post('/cadastrar', TarefasController.create);
-tarefasRoutes.put('/editar/:id', TarefasController.edit);
 tarefasRoutes.delete('/deletar/:id', TarefasController.delete);
 
 const routes = new Router();
