@@ -1,24 +1,24 @@
 const { Model, DataTypes } = require('sequelize');
-class Tarefas extends Model {
-  static init(sequelize) {
-    super.init(
-      {
-        id: {
-          type: DataTypes.INTEGER,
-          primaryKey: true,
-          autoIncrement: true,
-        },
-        title: DataTypes.STRING,
-        description: DataTypes.STRING,
-      },
-      {
-        sequelize,
-        modelName: 'Tarefas',
-        tableName: 'tarefas',
-        timestamps: true,  // Campos 'createdAt' e 'updatedAt'
-      }
-    );
+const sequelize = require('../database');
+
+class Tarefas extends Model {}
+
+Tarefas.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    title: DataTypes.STRING,
+    description: DataTypes.STRING,
+  },
+  {
+    sequelize,            // Conexão com o banco de dados
+    modelName: 'Tarefas', // Nome do modelo
+    tableName: 'tarefas', // Nome da tabela no banco de dados
+    timestamps: true,     // Adiciona os campos 'createdAt' e 'updatedAt'
   }
-}
+);
 
 module.exports = Tarefas;
