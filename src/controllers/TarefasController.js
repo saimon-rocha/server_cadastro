@@ -5,16 +5,16 @@ class TarefasController {
     // Método para listar todas as tarefas
     static async index(req, res) {
         try {
-            const tarefas = await Tarefas.findAll();
-            if (!tarefas.length) {
-                return res.status(200).json({ message: "Nenhuma tarefa cadastrada!" });
+            const tarefas = await Tarefas.findAll();  // Busca todas as tarefas no banco de dados
+            if (tarefas && tarefas.length > 0) {
+                return res.status(200).json(tarefas.length ? tarefas : []);
+            } else {
+                return res.status(200).send("Nenhuma tarefa cadastrada!");  // Caso não encontre tarefas
             }
-            return res.status(200).json(tarefas);
         } catch (error) {
-            console.error("Erro ao buscar tarefas:", error.message);
-            return res.status(500).json({ error: "Erro ao buscar tarefas" });
+            console.error('Erro ao buscar tarefas:', error.message);  // Exibe o erro no console
+            return res.status(500).send("Erro ao buscar tarefas");  // Retorna erro genérico para o cliente
         }
-
     }
 
     // Método para criar uma nova tarefa
