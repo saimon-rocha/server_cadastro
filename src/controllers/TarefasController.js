@@ -7,7 +7,7 @@ class TarefasController {
         try {
             const tarefas = await Tarefas.findAll();  // Busca todas as tarefas no banco de dados
             if (tarefas && tarefas.length > 0) {
-                return res.status(200).json(tarefas.length ? tarefas : []);
+                return res.status(200).json(tarefas);
             } else {
                 return res.status(200).send("Nenhuma tarefa cadastrada!");  // Caso não encontre tarefas
             }
