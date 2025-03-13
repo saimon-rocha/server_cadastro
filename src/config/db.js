@@ -1,28 +1,27 @@
-require('dotenv').config(); // Carrega as variáveis de ambiente
-const { URL } = require('url'); // Importa a classe URL
+require('dotenv').config();
+const { Sequelize } = require("sequelize");
 
-// Cria um objeto URL a partir da string de conexão
-const dbUrl = new URL(process.env.DB_HOST);
+// Verifica se a variável de ambiente está carregada corretamente
+if (!process.env.DATABASE_URL) {
+  throw new Error("A variável DATABASE_URL não está definida!");
+}
 
-// Extrai as partes da URL
-const username = dbUrl.username;
-const password = dbUrl.password;
-const host = dbUrl.hostname;
-const port = dbUrl.port;
-const database = dbUrl.pathname.split('/')[1]; // O nome do banco de dados vem após o "/"
-
-// Exporta a configuração do Sequelize
-module.exports = {
-  username,
-  password,
-  database,
-  host,
-  port: port || 5432, // Porta padrão do PostgreSQL é 5432
-  dialect: process.env.DB_DIALECT,
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
+  dialect: 'postgres', // Garante que o Sequelize está interpretando o banco corretamente
   dialectOptions: {
     ssl: {
-      require: true,
-      rejectUnauthorized: false, // Permite certificados autoassinados
-    },
+      require: true,  // Railway geralmente exige SSL para conexão com o banco
+      rejectUnauthorized: false, // Isso evita erro de certificado inválido
+    }
   },
-};
+  logging: false, // Desativar logs no terminal
+});
+
+sequelize.authenticate()
+  .then(() => console.log("Conexão com o banco de dados foi estabelecida com sucesso!"))
+  .catch(err => {
+    console.error("Erro ao conectar com o banco de dados:", err);
+    process.exit(1); // Encerra o processo se a conexão falhar
+  });
+
+module.exports = sequelize;
