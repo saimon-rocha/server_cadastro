@@ -1,20 +1,28 @@
-require('dotenv').config();
-const { Sequelize } = require("sequelize");
+require('dotenv').config(); // Carrega as variáveis de ambiente
+const { URL } = require('url'); // Importa a classe URL
 
-// Verifica se a variável de ambiente está definida corretamente
-if (!process.env.DATABASE_URL) {
-  throw new Error("A variável DATABASE_URL não está definida!");
-}
+// Cria um objeto URL a partir da string de conexão
+const dbUrl = new URL(process.env.DB_HOST);
 
-const sequelize = new Sequelize(process.env.DATABASE_URL, {
-  dialect: 'postgres', 
+// Extrai as partes da URL
+const username = dbUrl.username;
+const password = dbUrl.password;
+const host = dbUrl.hostname;
+const port = dbUrl.port;
+const database = dbUrl.pathname.split('/')[1]; // O nome do banco de dados vem após o "/"
+
+// Exporta a configuração do Sequelize
+module.exports = {
+  username,
+  password,
+  database,
+  host,
+  port: port || 5432, // Porta padrão do PostgreSQL é 5432
+  dialect: process.env.DB_DIALECT,
   dialectOptions: {
     ssl: {
       require: true,
-      rejectUnauthorized: false, 
-    }
+      rejectUnauthorized: false, // Permite certificados autoassinados
+    },
   },
-  logging: false,
-});
-
-module.exports = sequelize;
+};
