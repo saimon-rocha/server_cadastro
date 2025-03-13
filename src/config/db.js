@@ -18,7 +18,7 @@ module.exports = {
   database,
   host,
   port: port || 5432, // Porta padrão do PostgreSQL é 5432
-  dialect: process.env.DB_DIALECT,
+  dialect: process.env.DB_DIALECT || "postgres", // Dialeto padrão é o PostgreSQL
   dialectOptions: {
     ssl: {
       require: true,
