@@ -11,11 +11,10 @@ const port = 3000;
 // Middleware para analisar o corpo da requisição em formato JSON
 app.use(express.json());
 
-// Habilitando o CORS para permitir requisições do front-end em http://localhost:5173
+// Habilitar CORS para o seu frontend no Vercel)
 app.use(cors({
-  origin: 'http://localhost:5173', // Permite apenas o front-end React no localhost:5173
-  methods: 'GET,POST,PUT,DELETE',  // Define os métodos HTTP permitidos
-  allowedHeaders: 'Content-Type',  // Define os cabeçalhos permitidos
+  origin: 'https://gerenciador-tarefas-rolmdbvd3-saimon-rochas-projects.vercel.app', // Permite que o frontend acesse o backend
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
 }));
 
 // Usando as rotas definidas em outro arquivo
