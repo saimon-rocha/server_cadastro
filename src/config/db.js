@@ -2,7 +2,7 @@ require('dotenv').config(); // Carrega as variáveis de ambiente
 const { URL } = require('url'); // Importa a classe URL
 
 // Cria um objeto URL a partir da string de conexão
-const dbUrl = new URL(process.env.DB_HOST);
+const dbUrl = new URL(process.env.DATABASE_URL);
 
 // Extrai as partes da URL
 const username = dbUrl.username;
