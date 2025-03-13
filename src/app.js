@@ -13,8 +13,11 @@ app.use(express.json());
 
 // Habilitar CORS para o seu frontend no Vercel)
 app.use(cors({
-  origin: 'https://gerenciador-tarefas-rolmdbvd3-saimon-rochas-projects.vercel.app', // Permite que o frontend acesse o backend
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
+  origin: [
+    'https://gerenciador-tarefas-e2h2ap4cx-saimon-rochas-projects.vercel.app',
+    'https://gerenciador-tarefas-gold.vercel.app'
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE']
 }));
 
 // Usando as rotas definidas em outro arquivo
